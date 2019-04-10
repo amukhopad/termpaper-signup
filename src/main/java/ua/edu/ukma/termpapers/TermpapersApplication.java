@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TermpapersApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TermpapersApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TermpapersApplication.class, args);
+  }
 }
