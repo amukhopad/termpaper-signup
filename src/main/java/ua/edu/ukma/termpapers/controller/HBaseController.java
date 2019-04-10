@@ -15,7 +15,7 @@ public class HBaseController {
 
   private Configuration hBaseConfiguration;
 
-  public HBaseController(final Configuration hBaseConfiguration) {
+  public HBaseController(Configuration hBaseConfiguration) {
     this.hBaseConfiguration = hBaseConfiguration;
   }
 
@@ -24,11 +24,11 @@ public class HBaseController {
     try {
       HBaseAdmin.available(hBaseConfiguration);
     } catch (MasterNotRunningException ex) {
-      return "Master not running";
+      return "Master not running: " + ex.getMessage();
     } catch (ZooKeeperConnectionException ex) {
-      return "Can not connect to Zoo Keeper";
+      return "Can not connect to Zoo Keeper: " + ex.getMessage();
     } catch (IOException ex) {
-      return "IO Exception";
+      return "IO Exception: " + ex.getMessage();
     }
 
     return "Connection is valid";
