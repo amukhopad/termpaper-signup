@@ -1,6 +1,6 @@
 package ua.edu.ukma.termpapers.entities.users;
 
-public class Student extends User {
+public class Student extends User<Student> {
   private String studentIdNumber;
   private String contactInfo;
 
@@ -20,5 +20,13 @@ public class Student extends User {
   public Student setContactInfo(String contactInfo) {
     this.contactInfo = contactInfo;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "Student{ " + getFullName() +
+            ", studentIdNumber='" + studentIdNumber + '\'' +
+            ", contactInfo='" + contactInfo + '\'' +
+            '}';
   }
 }

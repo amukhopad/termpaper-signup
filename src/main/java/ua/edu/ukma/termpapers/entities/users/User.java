@@ -1,8 +1,8 @@
 package ua.edu.ukma.termpapers.entities.users;
 
-abstract public class User {
+abstract public class User<T extends User<T>> {
   private String email;
-  private int drfo;
+  private String drfo;
   private String givenName;
   private String familyName;
   private String fathersName;
@@ -21,44 +21,44 @@ abstract public class User {
     return email;
   }
 
-  public User setEmail(String email) {
+  public T setEmail(String email) {
     this.email = email;
-    return this;
+    return (T) this;
   }
 
-  public int getDrfo() {
+  public String getDrfo() {
     return drfo;
   }
 
-  public User setDrfo(int drfo) {
+  public T setDrfo(String drfo) {
     this.drfo = drfo;
-    return this;
+    return (T) this;
   }
 
   public String getGivenName() {
     return givenName;
   }
 
-  public User setGivenName(String givenName) {
+  public T setGivenName(String givenName) {
     this.givenName = givenName;
-    return this;
+    return (T) this;
   }
 
   public String getFamilyName() {
     return familyName;
   }
 
-  public User setFamilyName(String familyName) {
+  public T setFamilyName(String familyName) {
     this.familyName = familyName;
-    return this;
+    return (T) this;
   }
 
   public String getFathersName() {
     return fathersName;
   }
 
-  public User setFathersName(String fathersName) {
+  public T setFathersName(String fathersName) {
     this.fathersName = fathersName;
-    return this;
+    return (T) this;
   }
 }
