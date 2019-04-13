@@ -1,7 +1,7 @@
 package ua.edu.ukma.termpapers.entities.users;
 
 abstract public class User {
-  private long id;
+  private String email;
   private int drfo;
   private String givenName;
   private String familyName;
@@ -17,12 +17,12 @@ abstract public class User {
             fathersName.substring(0, 1));
   }
 
-  public long getId() {
-    return id;
+  public String getEmail() {
+    return email;
   }
 
-  public User setId(long id) {
-    this.id = id;
+  public User setEmail(String email) {
+    this.email = email;
     return this;
   }
 

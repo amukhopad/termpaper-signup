@@ -13,16 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("hbase")
 public class HBaseController {
 
-  private Configuration hBaseConfiguration;
+  private Configuration hBaseConf;
 
-  public HBaseController(Configuration hBaseConfiguration) {
-    this.hBaseConfiguration = hBaseConfiguration;
+  public HBaseController(Configuration hBaseConf) {
+    this.hBaseConf = hBaseConf;
   }
 
   @GetMapping(value = "/check")
   public String checkHBaseConnection() {
     try {
-      HBaseAdmin.available(hBaseConfiguration);
+      HBaseAdmin.available(hBaseConf);
     } catch (MasterNotRunningException ex) {
       return "Master not running: " + ex.getMessage();
     } catch (ZooKeeperConnectionException ex) {
