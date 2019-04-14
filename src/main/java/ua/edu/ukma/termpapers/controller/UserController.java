@@ -32,6 +32,11 @@ public class UserController {
 
   }
 
+  @GetMapping("/registration")
+  public String registration() {
+    return "register";
+  }
+
   @ResponseBody
   @PostMapping(value = "/register", consumes = "application/json")
   public String createUser(@RequestBody Student student) throws IOException {

@@ -1,5 +1,8 @@
 package ua.edu.ukma.termpapers.repository.util;
 
+import static org.apache.hadoop.hbase.util.Bytes.toBytes;
+
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
@@ -14,4 +17,19 @@ public class HbaseUtil {
     return Bytes.toString(result.getValue(family, column));
   }
 
+  public static int getInt(Result result, byte[] family, byte[] column) {
+    return Bytes.toInt(result.getValue(family, column));
+  }
+
+  public static void ifPresent(Put put, byte[] cf, byte[] column, Integer value) {
+    if (value != null) {
+      put.addColumn(cf, column, toBytes(value));
+    }
+  }
+
+  public static void ifPresent(Put put, byte[] cf, byte[] column, String value) {
+    if (value != null) {
+      put.addColumn(cf, column, toBytes(value));
+    }
+  }
 }

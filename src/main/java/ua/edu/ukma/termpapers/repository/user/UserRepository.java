@@ -1,9 +1,5 @@
 package ua.edu.ukma.termpapers.repository.user;
 
-import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-
-import java.io.IOException;
-
 import org.apache.hadoop.hbase.TableName;
 
 import ua.edu.ukma.termpapers.entities.users.User;
@@ -19,9 +15,9 @@ public interface UserRepository<U extends User> {
   byte[] FACULTY = "faculty".getBytes();
 
 
-  void put(U user) throws IOException;
+  void put(U user);
 
-  U get(String email) throws IOException;
+  U get(String email);
 
-  void delete(String email) throws IOException;
+  void delete(String email);
 }
