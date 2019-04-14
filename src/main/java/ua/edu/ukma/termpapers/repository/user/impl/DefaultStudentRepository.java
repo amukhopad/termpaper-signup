@@ -30,7 +30,6 @@ public class DefaultStudentRepository extends AbstractUserRepository<Student>
     userPut(operation);
   }
 
-
   @Override
   public Student get(String email) {
     Get operation = new Get(email.getBytes());

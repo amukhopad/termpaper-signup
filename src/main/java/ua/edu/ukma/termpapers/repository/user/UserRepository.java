@@ -11,7 +11,7 @@ public interface UserRepository<U extends User> {
   byte[] DRFO = "drfo".getBytes();
   byte[] GIVEN_NAME = "givenName".getBytes();
   byte[] FAMILY_NAME = "familyName".getBytes();
-  byte[] FATHER_NAME = "fatherName".getBytes();
+  byte[] FATHER_NAME = "fathersName".getBytes();
   byte[] FACULTY = "faculty".getBytes();
 
 

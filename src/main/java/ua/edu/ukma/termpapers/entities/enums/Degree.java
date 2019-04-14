@@ -1,6 +1,6 @@
 package ua.edu.ukma.termpapers.entities.enums;
 
-public enum Degree implements Localizable {
+public enum Degree {
   DOCTOR("доктор наук"),
   PHD("доктор філософії"),
   MASTER("магістр"),
@@ -16,8 +16,15 @@ public enum Degree implements Localizable {
     return this.name();
   }
 
-  @Override
   public String toLocalizedString() {
     return name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }

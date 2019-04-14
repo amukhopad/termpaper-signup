@@ -20,11 +20,11 @@ public interface CourseworkRepository {
   byte[] STUDENT = "student".getBytes();
 
 
-  void put(Coursework coursework) throws IOException;
+  void put(Coursework coursework);
 
-  Coursework get(String email) throws IOException;
+  Coursework get(String email);
 
-  void delete(String email) throws IOException;
+  void delete(String email);
 
   List<Coursework> getByStudent(String studentEmail);
 

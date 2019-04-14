@@ -26,7 +26,7 @@ public class HBaseController {
     } catch (MasterNotRunningException ex) {
       return "Master not running: " + ex.getMessage();
     } catch (ZooKeeperConnectionException ex) {
-      return "Can not connect to Zoo Keeper: " + ex.getMessage();
+      return "Can not connect to Zookeeper: " + ex.getMessage();
     } catch (IOException ex) {
       return "IO Exception: " + ex.getMessage();
     }
