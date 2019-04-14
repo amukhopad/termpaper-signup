@@ -2,8 +2,9 @@ package ua.edu.ukma.termpapers.repository.user;
 
 import ua.edu.ukma.termpapers.entities.users.Student;
 
-public interface StudentRepository extends UserRepository<Student> {
+public interface StudentRepository extends UserRepository<Student>, CourseworkUser {
   byte[] STUDENT_CF = "students".getBytes();
+  byte[] STUDENT_COURSEWORK_CF = "studentCoursework".getBytes();
 
   byte[] STUDENT_ID_NUM = "studentIdNumber".getBytes();
   byte[] CONTACT_INFO = "contactInfo".getBytes();

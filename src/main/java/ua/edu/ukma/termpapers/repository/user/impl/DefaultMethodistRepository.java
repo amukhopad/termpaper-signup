@@ -4,8 +4,6 @@ import static org.apache.hadoop.hbase.util.Bytes.toBytes;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
 
-import java.io.IOException;
-
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -23,24 +21,23 @@ public class DefaultMethodistRepository
         implements MethodistRepository {
 
   @Override
-  public void put(Methodist methodist) throws IOException {
-    HbaseConnection.put(getHbaseConf(), USERS_TABLE, () -> {
-      Put put = commonPut(methodist);
+  public void put(Methodist methodist) {
+    userPut(methodist.getEmail(), p -> {
+      Put put = commonPut(p, methodist);
       put.addColumn(METHODIST_CF, CATEGORY, toBytes(methodist.getCategory().name()));
-
       return put;
     });
 
   }
 
   @Override
-  public Methodist get(String email) throws IOException {
-    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, toBytes(email));
+  public Methodist get(String email) {
+    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email);
     return buildFromResult(result);
   }
 
   @Override
-  public void delete(String email) throws IOException {
+  public void delete(String email) {
     super.delete(email);
   }
 

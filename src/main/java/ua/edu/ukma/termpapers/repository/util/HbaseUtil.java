@@ -14,4 +14,8 @@ public class HbaseUtil {
     return Bytes.toString(result.getValue(family, column));
   }
 
+  public static int getInt(Result result, byte[] family, byte[] column) {
+    return Bytes.toInt(result.getValue(family, column));
+  }
+
 }

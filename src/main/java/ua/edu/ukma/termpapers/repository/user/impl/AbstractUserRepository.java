@@ -2,9 +2,10 @@ package ua.edu.ukma.termpapers.repository.user.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
 
-import java.io.IOException;
+import java.util.function.Function;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,12 +18,11 @@ abstract public class AbstractUserRepository<U extends User> implements UserRepo
   private Configuration hbaseConf;
 
   @Override
-  public void delete(String email) throws IOException {
-    HbaseConnection.delete(hbaseConf, USERS_TABLE, toBytes(email));
+  public void delete(String email) {
+    userDelete(email, p -> p);
   }
 
-  protected Put commonPut(U user) {
-    Put put = new Put(toBytes(user.getEmail()));
+  protected Put commonPut(Put put, U user) {
     put.addColumn(COMMON_CF, GIVEN_NAME, toBytes(user.getGivenName()));
     put.addColumn(COMMON_CF, FAMILY_NAME, toBytes(user.getFamilyName()));
     put.addColumn(COMMON_CF, FATHER_NAME, toBytes(user.getFathersName()));
@@ -33,5 +33,13 @@ abstract public class AbstractUserRepository<U extends User> implements UserRepo
 
   protected Configuration getHbaseConf() {
     return hbaseConf;
+  }
+
+  protected void userPut(String email, Function<Put, Put> operation) {
+    HbaseConnection.put(getHbaseConf(), USERS_TABLE, email, operation);
+  }
+
+  protected void userDelete(String email, Function<Delete, Delete> operation) {
+    HbaseConnection.delete(getHbaseConf(), USERS_TABLE, email, operation);
   }
 }

@@ -4,8 +4,6 @@ import static org.apache.hadoop.hbase.util.Bytes.toBytes;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
 
-import java.io.IOException;
-
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -22,24 +20,39 @@ public class DefaultStudentRepository
         implements StudentRepository {
 
   @Override
-  public void put(Student student) throws IOException {
-    HbaseConnection.put(getHbaseConf(), USERS_TABLE, () -> {
-      Put put = commonPut(student);
+  public void put(Student student) {
+    userPut(student.getEmail(), p -> {
+      Put put = commonPut(p, student);
       put.addColumn(STUDENT_CF, CONTACT_INFO, toBytes(student.getContactInfo()));
       put.addColumn(STUDENT_CF, STUDENT_ID_NUM, toBytes(student.getStudentIdNumber()));
-
       return put;
     });
   }
 
   @Override
-  public Student get(String email) throws IOException {
-    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, toBytes(email));
+  public void putCoursework(String email, int year, String coursework) {
+    userPut(email, p -> {
+      p.addColumn(STUDENT_COURSEWORK_CF, toBytes(year), toBytes(coursework));
+      return p;
+    });
+  }
+
+  @Override
+  public void deleteCoursework(String email, int year, String coursework) {
+    userDelete(email, d -> {
+      d.addColumn(STUDENT_COURSEWORK_CF, toBytes(year));
+      return d;
+    });
+  }
+
+  @Override
+  public Student get(String email) {
+    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email);
     return buildFromResult(result);
   }
 
   @Override
-  public void delete(String email) throws IOException {
+  public void delete(String email) {
     super.delete(email);
   }
 
