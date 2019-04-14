@@ -11,6 +11,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import ua.edu.ukma.termpapers.entities.enums.AcademicRole;
 import ua.edu.ukma.termpapers.entities.enums.Degree;
 import ua.edu.ukma.termpapers.entities.enums.Faculty;
+import ua.edu.ukma.termpapers.entities.users.Student;
 import ua.edu.ukma.termpapers.entities.users.Teacher;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;
 import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
@@ -31,24 +32,12 @@ public class DefaultTeacherRepository
   }
 
   @Override
-  public void putCoursework(String email, int year, String coursework) {
-    userPut(email, p -> {
-      p.addColumn(TEACHER_COURSEWORK_CF, toBytes(coursework), toBytes(coursework));
-      return p;
-    });
-  }
-
-  @Override
-  public void deleteCoursework(String email, int year, String coursework) {
-    userDelete(email, d -> {
-      d.addColumn(TEACHER_COURSEWORK_CF, toBytes(coursework));
-      return d;
-    });
-  }
-
-  @Override
   public Teacher get(String email) {
-    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email);
+    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email, get -> {
+      get.addFamily(COMMON_CF);
+      get.addFamily(TEACHER_CF);
+      return get;
+    });
     return buildFromResult(result);
   }
 
@@ -58,7 +47,7 @@ public class DefaultTeacherRepository
   }
 
   private Teacher buildFromResult(Result result) {
-    return new Teacher()
+    return (result.isEmpty()) ? null : new Teacher()
             .setEmail(Bytes.toString(result.getRow()))
             .setAcademicRole(getEnum(AcademicRole.class, result, TEACHER_CF, ACADEMIC_ROLE))
             .setDegree(getEnum(Degree.class, result, TEACHER_CF, DEGREE))

@@ -4,3 +4,9 @@ server:
 hbase:
   config:
     xml: hbase-config-local.xml
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp

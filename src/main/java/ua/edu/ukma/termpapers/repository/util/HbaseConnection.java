@@ -37,14 +37,7 @@ public class HbaseConnection {
   }
 
   public static void delete(Configuration hbaseConf, TableName tableName, String rowKey) {
-    try (Connection conn = createConnection(hbaseConf);
-         Table table = conn.getTable(tableName)
-    ) {
-      Delete delete = new Delete(Bytes.toBytes(rowKey));
-      table.delete(delete);
-    } catch (IOException ex) {
-      throw new RuntimeException(ex);
-    }
+    delete(hbaseConf, tableName, rowKey, d -> d);
   }
 
   public static void delete(
@@ -69,6 +62,20 @@ public class HbaseConnection {
     ) {
       Get get = new Get(Bytes.toBytes(rowKey));
       return table.get(get);
+    } catch (IOException ex) {
+      throw new RuntimeException(ex);
+    }
+  }
+
+  public static Result get(
+          Configuration hbaseConf, TableName tableName, String rowKey,
+          Function<Get, Get> operation) {
+    try (Connection conn = createConnection(hbaseConf);
+         Table table = conn.getTable(tableName)
+    ) {
+      Get get = new Get(Bytes.toBytes(rowKey));
+      Get mutated = operation.apply(get);
+      return table.get(mutated);
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }

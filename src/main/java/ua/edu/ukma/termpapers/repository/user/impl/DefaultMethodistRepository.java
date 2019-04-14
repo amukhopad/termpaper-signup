@@ -32,7 +32,11 @@ public class DefaultMethodistRepository
 
   @Override
   public Methodist get(String email) {
-    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email);
+    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email, get -> {
+      get.addFamily(COMMON_CF);
+      get.addFamily(METHODIST_CF);
+      return get;
+    });
     return buildFromResult(result);
   }
 
@@ -42,7 +46,7 @@ public class DefaultMethodistRepository
   }
 
   private Methodist buildFromResult(Result result) {
-    return new Methodist()
+    return (result.isEmpty()) ? null : new Methodist()
             .setEmail(Bytes.toString(result.getRow()))
             .setCategory(getEnum(Category.class, result, METHODIST_CF, CATEGORY))
             .setGivenName(getString(result, COMMON_CF, GIVEN_NAME))

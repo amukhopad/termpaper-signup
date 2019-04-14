@@ -1,6 +1,7 @@
 package ua.edu.ukma.termpapers.repository.coursework.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
+import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.ifPresent;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getInt;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.CompareOperator;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
@@ -39,14 +41,12 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
   @Override
   public void put(Coursework cw) {
     HbaseConnection.put(hbaseConf, COURSEWORK_TABLE, cw.getKey(), put -> {
-      put.addColumn(COURSEWORK_CF, NAME, toBytes(cw.getName()));
-      put.addColumn(COURSEWORK_CF, DESCRIPTION, toBytes(cw.getDescription()));
-      put.addColumn(COURSEWORK_CF, YEAR, toBytes(cw.getYear()));
-      put.addColumn(COURSEWORK_CF, FACULTY, toBytes(cw.getFaculty().name()));
-      put.addColumn(COURSEWORK_CF, STUDENT, toBytes(cw.getStudentEmail()));
-      put.addColumn(COURSEWORK_CF, TEACHER, toBytes(cw.getTeacherEmail()));
-
-      assignUsers(cw);
+      ifPresent(put, COURSEWORK_CF, NAME, cw.getName());
+      ifPresent(put, COURSEWORK_CF, DESCRIPTION, cw.getDescription());
+      ifPresent(put, COURSEWORK_CF, YEAR, cw.getYear());
+      ifPresent(put, COURSEWORK_CF, FACULTY, cw.getFaculty().name());
+      ifPresent(put, COURSEWORK_CF, STUDENT, cw.getStudentEmail());
+      ifPresent(put, COURSEWORK_CF, TEACHER, cw.getTeacherEmail());
 
       return put;
     });
@@ -54,9 +54,7 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
 
   @Override
   public void delete(String key) {
-    Coursework coursework = get(key);
     HbaseConnection.delete(hbaseConf, COURSEWORK_TABLE, key);
-    unassignUsers(coursework);
   }
 
   @Override
@@ -71,17 +69,13 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
 
   @Override
   public List<Coursework> getByStudent(String studentEmail) {
-    Filter filter = new SingleColumnValueFilter(
-            COURSEWORK_CF, STUDENT,
-            CompareOperator.EQUAL,
-            toBytes(studentEmail));
+    List<Result> results = findEquals(STUDENT, studentEmail);
+    List<Coursework> courseworks = new ArrayList<>();
+    if (results.isEmpty()) return courseworks;
 
     Student student = studentRepo.get(studentEmail);
 
-    List<Result> results = HbaseConnection.scan(hbaseConf, COURSEWORK_TABLE, filter);
-
     Map<String, Teacher> cache = new HashMap<>();
-    List<Coursework> courseworks = new ArrayList<>();
     for (Result r : results) {
       String teacherEmail = getString(r, COURSEWORK_CF, TEACHER);
 
@@ -97,17 +91,13 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
 
   @Override
   public List<Coursework> getByTeacher(String teacherEmail) {
-    Filter filter = new SingleColumnValueFilter(
-            COURSEWORK_CF, TEACHER,
-            CompareOperator.EQUAL,
-            toBytes(teacherEmail));
+    List<Coursework> courseworks = new ArrayList<>();
+    List<Result> results = findEquals(TEACHER, teacherEmail);
+    if (results.isEmpty()) return courseworks;
 
     Teacher teacher = teacherRepo.get(teacherEmail);
 
-    List<Result> results = HbaseConnection.scan(hbaseConf, COURSEWORK_TABLE, filter);
-
     Map<String, Student> cache = new HashMap<>();
-    List<Coursework> courseworks = new ArrayList<>();
     for (Result r : results) {
       String studentEmail = getString(r, COURSEWORK_CF, STUDENT);
       cache.putIfAbsent(teacherEmail, studentRepo.get(studentEmail));
@@ -119,14 +109,13 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
     return courseworks;
   }
 
-  private void assignUsers(Coursework cw) {
-    studentRepo.putCoursework(cw.getStudentEmail(), cw.getYear(), cw.getKey());
-    teacherRepo.putCoursework(cw.getTeacherEmail(), cw.getYear(), cw.getKey());
-  }
+  private List<Result> findEquals(byte[] column, String value) {
+    Filter filter = new SingleColumnValueFilter(
+            COURSEWORK_CF, column,
+            CompareOperator.EQUAL,
+            toBytes(value));
 
-  private void unassignUsers(Coursework cw) {
-    studentRepo.deleteCoursework(cw.getStudentEmail(), cw.getYear(), cw.getKey());
-    teacherRepo.deleteCoursework(cw.getTeacherEmail(), cw.getYear(), cw.getKey());
+    return HbaseConnection.scan(hbaseConf, COURSEWORK_TABLE, filter);
   }
 
   private Coursework buildFromResult(Result result, Teacher teacher, Student student) {

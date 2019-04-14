@@ -29,25 +29,15 @@ public class DefaultStudentRepository
     });
   }
 
-  @Override
-  public void putCoursework(String email, int year, String coursework) {
-    userPut(email, p -> {
-      p.addColumn(STUDENT_COURSEWORK_CF, toBytes(year), toBytes(coursework));
-      return p;
-    });
-  }
-
-  @Override
-  public void deleteCoursework(String email, int year, String coursework) {
-    userDelete(email, d -> {
-      d.addColumn(STUDENT_COURSEWORK_CF, toBytes(year));
-      return d;
-    });
-  }
 
   @Override
   public Student get(String email) {
-    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email);
+    Result result = HbaseConnection.get(getHbaseConf(), USERS_TABLE, email, get -> {
+      get.addFamily(COMMON_CF);
+      get.addFamily(STUDENT_CF);
+      return get;
+    });
+
     return buildFromResult(result);
   }
 
@@ -57,7 +47,7 @@ public class DefaultStudentRepository
   }
 
   private Student buildFromResult(Result result) {
-    return new Student()
+    return (result.isEmpty()) ? null : new Student()
             .setEmail(Bytes.toString(result.getRow()))
             .setContactInfo(getString(result, STUDENT_CF, CONTACT_INFO))
             .setStudentIdNumber(getString(result, STUDENT_CF, STUDENT_ID_NUM))
