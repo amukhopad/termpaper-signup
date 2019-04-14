@@ -1,11 +1,14 @@
 package ua.edu.ukma.termpapers.entities.users;
 
+import ua.edu.ukma.termpapers.entities.enums.Faculty;
+
 abstract public class User<T extends User<T>> {
   private String email;
   private String drfo;
   private String givenName;
   private String familyName;
   private String fathersName;
+  private Faculty faculty;
 
   public String getFullName() {
     return String.format("%s %s %s", familyName, givenName, fathersName);
@@ -60,5 +63,14 @@ abstract public class User<T extends User<T>> {
   public T setFathersName(String fathersName) {
     this.fathersName = fathersName;
     return (T) this;
+  }
+
+  public T setFaculty(Faculty faculty) {
+    this.faculty = faculty;
+    return (T) this;
+  }
+
+  public Faculty getFaculty() {
+    return faculty;
   }
 }

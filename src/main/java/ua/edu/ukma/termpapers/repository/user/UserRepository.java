@@ -16,6 +16,8 @@ public interface UserRepository<U extends User> {
   byte[] GIVEN_NAME = "givenName".getBytes();
   byte[] FAMILY_NAME = "familyName".getBytes();
   byte[] FATHER_NAME = "fatherName".getBytes();
+  byte[] FACULTY = "faculty".getBytes();
+
 
   void put(U user) throws IOException;
 

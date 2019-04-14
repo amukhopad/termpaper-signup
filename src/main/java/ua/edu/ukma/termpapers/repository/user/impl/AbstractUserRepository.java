@@ -26,8 +26,8 @@ abstract public class AbstractUserRepository<U extends User> implements UserRepo
     put.addColumn(COMMON_CF, GIVEN_NAME, toBytes(user.getGivenName()));
     put.addColumn(COMMON_CF, FAMILY_NAME, toBytes(user.getFamilyName()));
     put.addColumn(COMMON_CF, FATHER_NAME, toBytes(user.getFathersName()));
+    put.addColumn(COMMON_CF, FACULTY, toBytes(user.getFaculty().name()));
     put.addColumn(COMMON_CF, DRFO, toBytes(user.getDrfo()));
-
     return put;
   }
 

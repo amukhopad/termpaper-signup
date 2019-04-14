@@ -1,6 +1,6 @@
-package ua.edu.ukma.termpapers.entities.degrees;
+package ua.edu.ukma.termpapers.entities.enums;
 
-public enum Category {
+public enum Category implements Localizable {
   HIGHEST("cпеціаліст вищої категорії"),
   FIRST("cпеціаліст першої категорії"),
   SECOND("cпеціаліст другої категорії"),
@@ -13,6 +13,11 @@ public enum Category {
   }
 
   public String toString() {
+    return this.name();
+  }
+
+  @Override
+  public String toLocalizedString() {
     return name;
   }
 }

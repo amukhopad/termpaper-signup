@@ -11,7 +11,8 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.stereotype.Repository;
 
-import ua.edu.ukma.termpapers.entities.degrees.Category;
+import ua.edu.ukma.termpapers.entities.enums.Category;
+import ua.edu.ukma.termpapers.entities.enums.Faculty;
 import ua.edu.ukma.termpapers.entities.users.Methodist;
 import ua.edu.ukma.termpapers.repository.user.MethodistRepository;
 import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
@@ -50,6 +51,7 @@ public class DefaultMethodistRepository
             .setGivenName(getString(result, COMMON_CF, GIVEN_NAME))
             .setFathersName(getString(result, COMMON_CF, FATHER_NAME))
             .setFamilyName(getString(result, COMMON_CF, FAMILY_NAME))
+            .setFaculty(getEnum(Faculty.class, result, COMMON_CF, FACULTY))
             .setDrfo(getString(result, COMMON_CF, DRFO));
   }
 }
