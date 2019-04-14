@@ -26,7 +26,7 @@ public class UserController {
       Student user = repository.get(email);
 
       return user.toString();
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
       return e.getMessage();
     }
 
@@ -39,7 +39,7 @@ public class UserController {
 
   @ResponseBody
   @PostMapping(value = "/register", consumes = "application/json")
-  public String createUser(@RequestBody Student student) throws IOException {
+  public String createUser(@RequestBody Student student) {
     repository.put(student);
 
     return "/hbase/check";

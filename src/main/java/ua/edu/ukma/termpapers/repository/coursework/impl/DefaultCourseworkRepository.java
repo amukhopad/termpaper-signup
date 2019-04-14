@@ -1,19 +1,20 @@
 package ua.edu.ukma.termpapers.repository.coursework.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.ifPresent;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getInt;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
+import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.ifPresent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.CompareOperator;
-import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;

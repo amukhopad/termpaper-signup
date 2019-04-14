@@ -13,7 +13,6 @@ import ua.edu.ukma.termpapers.entities.enums.Category;
 import ua.edu.ukma.termpapers.entities.enums.Faculty;
 import ua.edu.ukma.termpapers.entities.users.Methodist;
 import ua.edu.ukma.termpapers.repository.user.MethodistRepository;
-import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
 
 @Repository
 public class DefaultMethodistRepository

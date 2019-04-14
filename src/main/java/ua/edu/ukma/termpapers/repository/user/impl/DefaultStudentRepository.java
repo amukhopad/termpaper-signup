@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import ua.edu.ukma.termpapers.entities.enums.Faculty;
 import ua.edu.ukma.termpapers.entities.users.Student;
 import ua.edu.ukma.termpapers.repository.user.StudentRepository;
-import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
 
 @Repository
 public class DefaultStudentRepository

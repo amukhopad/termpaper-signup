@@ -7,15 +7,15 @@ import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.springframework.stereotype.Repository;
 
 import ua.edu.ukma.termpapers.entities.enums.AcademicRole;
 import ua.edu.ukma.termpapers.entities.enums.Degree;
 import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.users.Student;
 import ua.edu.ukma.termpapers.entities.users.Teacher;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;
-import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
 
+@Repository
 public class DefaultTeacherRepository
         extends AbstractUserRepository<Teacher>
         implements TeacherRepository {
