@@ -10,8 +10,9 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import ua.edu.ukma.termpapers.entities.degrees.AcademicRole;
-import ua.edu.ukma.termpapers.entities.degrees.Degree;
+import ua.edu.ukma.termpapers.entities.enums.AcademicRole;
+import ua.edu.ukma.termpapers.entities.enums.Degree;
+import ua.edu.ukma.termpapers.entities.enums.Faculty;
 import ua.edu.ukma.termpapers.entities.users.Teacher;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;
 import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
@@ -50,6 +51,7 @@ public class DefaultTeacherRepository
             .setGivenName(getString(result, COMMON_CF, GIVEN_NAME))
             .setFathersName(getString(result, COMMON_CF, FATHER_NAME))
             .setFamilyName(getString(result, COMMON_CF, FAMILY_NAME))
+            .setFaculty(getEnum(Faculty.class, result, COMMON_CF, FACULTY))
             .setDrfo(getString(result, COMMON_CF, DRFO));
   }
 }

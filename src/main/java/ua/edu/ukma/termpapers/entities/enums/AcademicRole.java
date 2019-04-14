@@ -1,6 +1,6 @@
-package ua.edu.ukma.termpapers.entities.degrees;
+package ua.edu.ukma.termpapers.entities.enums;
 
-public enum AcademicRole {
+public enum AcademicRole implements Localizable {
   PROFESSOR("професор"),
   DOCENT("доцент"),
   SR_TUTOR("старший викладач"),
@@ -14,6 +14,11 @@ public enum AcademicRole {
   }
 
   public String toString() {
+    return this.name();
+  }
+
+  @Override
+  public String toLocalizedString() {
     return name;
   }
 }

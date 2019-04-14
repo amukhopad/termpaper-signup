@@ -1,6 +1,7 @@
 package ua.edu.ukma.termpapers.repository.user.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
+import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.stereotype.Repository;
 
+import ua.edu.ukma.termpapers.entities.enums.Faculty;
 import ua.edu.ukma.termpapers.entities.users.Student;
 import ua.edu.ukma.termpapers.repository.user.StudentRepository;
 import ua.edu.ukma.termpapers.repository.util.HbaseConnection;
@@ -49,6 +51,7 @@ public class DefaultStudentRepository
             .setGivenName(getString(result, COMMON_CF, GIVEN_NAME))
             .setFathersName(getString(result, COMMON_CF, FATHER_NAME))
             .setFamilyName(getString(result, COMMON_CF, FAMILY_NAME))
+            .setFaculty(getEnum(Faculty.class, result, COMMON_CF, FACULTY))
             .setDrfo(getString(result, COMMON_CF, DRFO));
   }
 }
