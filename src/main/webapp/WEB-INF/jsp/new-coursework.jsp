@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 
 
 <!DOCTYPE html>
@@ -28,10 +28,6 @@
             <td><form:input path="teacherEmail"/></td>
         </tr>
         <tr>
-            <td><form:label path="studentEmail">Пошта студента</form:label></td>
-            <td><form:input path="studentEmail"/></td>
-        </tr>
-        <tr>
             <td><form:label path="faculty">Факультет</form:label></td>
             <td>
                 <form:select path="faculty">
@@ -42,25 +38,6 @@
         <tr>
             <td><input type="submit" value="Submit"/></td>
         </tr>
-        <c:if test="${foundCWs ne null}">
-            <tr>
-                <td>
-                    <ul>
-                    <c:forEach items="${foundCWs}" var="cw">
-                        <div>
-                            <p>Назва: ${cw.name}</p>
-                            <p>Опис: ${cw.description}</p>
-                            <p>Рік: ${cw.year}</p>
-                            <p>Викладач: ${cw.teacherEmail}</p>
-                            <p>Студент: ${cw.studentEmail}</p>
-                            <p>Факультет: ${cw.faculty}</p>
-                            ---
-                        </div>
-                    </c:forEach>
-                    </ul>
-                </td>
-            </tr>
-        </c:if>
     </table>
 </form:form>
 

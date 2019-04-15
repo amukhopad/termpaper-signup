@@ -4,6 +4,7 @@ import static org.apache.hadoop.hbase.util.Bytes.toBytes;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -32,6 +33,10 @@ public class DefaultStudentRepository extends AbstractUserRepository<Student>
 
   @Override
   public Student get(String email) {
+    if (StringUtils.isEmpty(email)) {
+      return null;
+    }
+
     Get operation = new Get(email.getBytes());
     operation.addFamily(COMMON_CF);
     operation.addFamily(STUDENT_CF);

@@ -18,6 +18,7 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.springframework.stereotype.Repository;
+
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
 import ua.edu.ukma.termpapers.entities.coursework.Coursework;
 import ua.edu.ukma.termpapers.entities.enums.Faculty;
@@ -35,9 +36,9 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
   private final StudentRepository studentRepo;
 
   public DefaultCourseworkRepository(
-      HBaseConnection connection,
-      TeacherRepository teacherRepo,
-      StudentRepository studentRepo) {
+          HBaseConnection connection,
+          TeacherRepository teacherRepo,
+          StudentRepository studentRepo) {
     this.connection = connection;
     this.teacherRepo = teacherRepo;
     this.studentRepo = studentRepo;
@@ -73,6 +74,25 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
   }
 
   @Override
+  public List<Coursework> getFree() {
+    List<Coursework> cws = new ArrayList<>();
+    List<Result> results = findEquals(STUDENT, "");
+
+    Map<String, Teacher> cache = new HashMap<>();
+    for (Result result : results) {
+      String teacherEmail = getString(result, COURSEWORK_CF, TEACHER);
+
+      cache.putIfAbsent(teacherEmail, teacherRepo.get(teacherEmail));
+
+      Teacher teacher = cache.get(teacherEmail);
+      Coursework cw = buildFromResult(result, teacher, null);
+      cws.add(cw);
+    }
+
+    return cws;
+  }
+
+  @Override
   public List<Coursework> getByStudent(String studentEmail) {
     List<Result> results = findEquals(STUDENT, studentEmail);
     List<Coursework> courseworks = new ArrayList<>();
@@ -81,12 +101,11 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
     }
 
     Student student = studentRepo.get(studentEmail);
-
-    Map<String, Teacher> cache = new HashMap<>();
     for (Result r : results) {
       String teacherEmail = getString(r, COURSEWORK_CF, TEACHER);
-      cache.putIfAbsent(studentEmail, teacherRepo.get(studentEmail));
-      Teacher teacher = cache.get(teacherEmail);
+
+      Teacher teacher = teacherRepo.get(teacherEmail);
+
       Coursework coursework = buildFromResult(r, teacher, student);
       courseworks.add(coursework);
     }
@@ -103,12 +122,11 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
     }
 
     Teacher teacher = teacherRepo.get(teacherEmail);
-
-    Map<String, Student> cache = new HashMap<>();
     for (Result r : results) {
       String studentEmail = getString(r, COURSEWORK_CF, STUDENT);
-      cache.putIfAbsent(studentEmail, studentRepo.get(studentEmail));
-      Student student = cache.get(studentEmail);
+
+      Student student = studentRepo.get(studentEmail);
+
       Coursework coursework = buildFromResult(r, teacher, student);
       courseworks.add(coursework);
     }
