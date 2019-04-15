@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.hadoop.hbase.CompareOperator;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Put;
@@ -84,7 +85,7 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
     Map<String, Teacher> cache = new HashMap<>();
     for (Result r : results) {
       String teacherEmail = getString(r, COURSEWORK_CF, TEACHER);
-      cache.putIfAbsent(teacherEmail, teacherRepo.get(studentEmail));
+      cache.putIfAbsent(studentEmail, teacherRepo.get(studentEmail));
       Teacher teacher = cache.get(teacherEmail);
       Coursework coursework = buildFromResult(r, teacher, student);
       courseworks.add(coursework);
@@ -106,7 +107,7 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
     Map<String, Student> cache = new HashMap<>();
     for (Result r : results) {
       String studentEmail = getString(r, COURSEWORK_CF, STUDENT);
-      cache.putIfAbsent(teacherEmail, studentRepo.get(studentEmail));
+      cache.putIfAbsent(studentEmail, studentRepo.get(studentEmail));
       Student student = cache.get(studentEmail);
       Coursework coursework = buildFromResult(r, teacher, student);
       courseworks.add(coursework);
@@ -131,8 +132,8 @@ public class DefaultCourseworkRepository implements CourseworkRepository {
         .setYear(getInt(result, COURSEWORK_CF, YEAR))
         .setStudent(student)
         .setTeacher(teacher)
-        .setStudentEmail(student.getEmail())
-        .setTeacherEmail(teacher.getEmail())
+        .setStudentEmail((student == null) ? null : student.getEmail())
+        .setTeacherEmail((teacher == null) ? null : teacher.getEmail())
         .setFaculty(getEnum(Faculty.class, result, COURSEWORK_CF, FACULTY));
   }
 }

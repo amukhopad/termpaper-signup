@@ -10,7 +10,8 @@ public class HbaseUtil {
 
   public static <T extends Enum<T>> T getEnum(Class<T> enumType,
                                               Result result, byte[] family, byte[] column) {
-    return Enum.valueOf(enumType, Bytes.toString(result.getValue(family, column)));
+    String name = Bytes.toString(result.getValue(family, column));
+    return (name == null) ? null : Enum.valueOf(enumType, name);
   }
 
   public static String getString(Result result, byte[] family, byte[] column) {

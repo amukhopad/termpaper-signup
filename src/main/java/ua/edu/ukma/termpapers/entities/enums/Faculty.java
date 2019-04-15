@@ -1,6 +1,6 @@
 package ua.edu.ukma.termpapers.entities.enums;
 
-public enum Faculty implements Localizable {
+public enum Faculty {
   LAW("факультет правничих наук"),
   HUMANITIES("факультет гуманітарних наук"),
   COMPUTER_SCIENCE("факультет інформатики"),
@@ -19,8 +19,11 @@ public enum Faculty implements Localizable {
     return this.name();
   }
 
-  @Override
-  public String toLocalizedString() {
+  public String getName() {
     return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 }
