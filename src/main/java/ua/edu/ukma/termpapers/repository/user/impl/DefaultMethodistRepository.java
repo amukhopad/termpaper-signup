@@ -1,7 +1,7 @@
 package ua.edu.ukma.termpapers.repository.user.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getEnum;
 
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;

@@ -12,6 +12,14 @@
 <body>
 <h1>Головна сторінка</h1>
 
+<h2>Користувачі</h2>
+<div>
+    <a href="/user/all">Список користувачів</a>
+</div>
+<div>
+    <a href="/user/registration">Додати користувача</a>
+</div>
+
 <h2>Студенти</h2>
 <div>
     <a href="/users/registration">Реєстрація студентів</a>

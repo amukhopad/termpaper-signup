@@ -2,8 +2,8 @@ package ua.edu.ukma.termpapers.repository.user.impl;
 
 import static java.lang.String.format;
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getEnum;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getString;
 
 import java.lang.reflect.InvocationTargetException;
 import org.apache.hadoop.hbase.client.Delete;

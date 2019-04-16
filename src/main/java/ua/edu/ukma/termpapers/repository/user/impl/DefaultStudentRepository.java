@@ -1,7 +1,7 @@
 package ua.edu.ukma.termpapers.repository.user.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getString;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hbase.client.Get;

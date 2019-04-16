@@ -1,10 +1,10 @@
 package ua.edu.ukma.termpapers.repository.coursework.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getInt;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.ifPresent;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getEnum;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getInt;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getString;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.ifPresent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
