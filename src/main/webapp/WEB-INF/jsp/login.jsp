@@ -26,22 +26,5 @@
         </div>
     </form>
 </div>
-
-
-<%--<form:form method="POST" action="/">--%>
-    <%--<table>--%>
-        <%--<tr>--%>
-            <%--<td><form:label path="username">Електронна адреса</form:label></td>--%>
-            <%--<td><form:input path="username"/></td>--%>
-        <%--</tr>--%>
-        <%--<tr>--%>
-            <%--<td><form:label path="password">Пароль</form:label></td>--%>
-            <%--<td><form:password path="password"/></td>--%>
-        <%--</tr>--%>
-        <%--<tr>--%>
-            <%--<td><input type="submit" value="Submit"/></td>--%>
-        <%--</tr>--%>
-    <%--</table>--%>
-<%--</form:form>--%>
 </body>
 </html>
