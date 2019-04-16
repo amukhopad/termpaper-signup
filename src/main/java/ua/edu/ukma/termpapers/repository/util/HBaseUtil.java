@@ -126,6 +126,14 @@ public class HBaseUtil {
             format("Field with @Id annotation is not found for type %s", type.getName())));
   }
 
+  public static String getColumnFamily(Class<?> type, String fieldName) {
+    return getColumnAnnotation(type, fieldName).family();
+  }
+
+  public static String getColumnName(Class<?> type, String fieldName) {
+    return getColumnAnnotation(type, fieldName).name();
+  }
+
   public static Method getGetterFor(Field field) {
     String fieldName = field.getName();
     String getterName =
@@ -156,5 +164,20 @@ public class HBaseUtil {
     return Arrays.stream(type.getDeclaredFields())
         .filter(field -> field.isAnnotationPresent(Column.class))
         .collect(Collectors.toList());
+  }
+
+  private static Column getColumnAnnotation(Class<?> type, String fieldName) {
+    Field field;
+    try {
+      field = type.getDeclaredField(fieldName);
+    } catch (NoSuchFieldException ex) {
+      throw new HBasePersistenceException(format(
+          "Field %s not found for type %s", fieldName, type.getName()));
+    }
+    if (!field.isAnnotationPresent(Column.class)) {
+      throw new HBasePersistenceException(format(
+          "@Column annotation is not found for field %s for type %s", field, type.getName()));
+    }
+    return field.getAnnotation(Column.class);
   }
 }
