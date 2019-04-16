@@ -1,4 +1,4 @@
-package ua.edu.ukma.termpapers.entities.users;
+package ua.edu.ukma.termpapers.entity.users;
 
 public class Student extends User<Student> {
   private String studentIdNumber;

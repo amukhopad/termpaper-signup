@@ -1,10 +1,10 @@
 package ua.edu.ukma.termpapers.repository.coursework.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getInt;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.ifPresent;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getEnum;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getInt;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.getString;
+import static ua.edu.ukma.termpapers.repository.util.HBaseUtil.ifPresent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,10 +20,10 @@ import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.springframework.stereotype.Repository;
 
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
-import ua.edu.ukma.termpapers.entities.coursework.Coursework;
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.users.Student;
-import ua.edu.ukma.termpapers.entities.users.Teacher;
+import ua.edu.ukma.termpapers.entity.coursework.Coursework;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.users.Student;
+import ua.edu.ukma.termpapers.entity.users.Teacher;
 import ua.edu.ukma.termpapers.repository.coursework.CourseworkRepository;
 import ua.edu.ukma.termpapers.repository.user.StudentRepository;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;

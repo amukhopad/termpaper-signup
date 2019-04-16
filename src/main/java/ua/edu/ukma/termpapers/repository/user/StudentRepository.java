@@ -1,6 +1,6 @@
 package ua.edu.ukma.termpapers.repository.user;
 
-import ua.edu.ukma.termpapers.entities.users.Student;
+import ua.edu.ukma.termpapers.entity.users.Student;
 
 public interface StudentRepository extends UserRepository<Student> {
   byte[] STUDENT_CF = "students".getBytes();

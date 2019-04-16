@@ -71,18 +71,27 @@ public class HBaseConnection {
     }
   }
 
-  public List<Result> scan(TableName tableName, Filter filter) {
+  public List<Result> scan(TableName tableName, Scan operation) {
     try (Connection conn = createConnection(configuration);
         Table table = conn.getTable(tableName)) {
 
-      Scan scan = new Scan();
-      scan.setFilter(filter);
-      ResultScanner scanner = table.getScanner(scan);
+      ResultScanner scanner = table.getScanner(operation);
       return IteratorUtils.toList(scanner.iterator());
     } catch (IOException ex) {
       LOGGER.error(
           format("Error during Scan operation with table %s", tableName.getNameAsString()), ex);
       return Collections.emptyList();
     }
+  }
+
+  public List<Result> scan(TableName tableName, Filter filter) {
+    Scan operation = new Scan();
+    operation.setFilter(filter);
+    return scan(tableName, operation);
+  }
+
+  public List<Result> scan(TableName tableName) {
+    Scan operation = new Scan();
+    return scan(tableName, operation);
   }
 }

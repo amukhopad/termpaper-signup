@@ -1,8 +1,8 @@
-package ua.edu.ukma.termpapers.entities.coursework;
+package ua.edu.ukma.termpapers.entity.coursework;
 
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.users.Student;
-import ua.edu.ukma.termpapers.entities.users.Teacher;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.users.Student;
+import ua.edu.ukma.termpapers.entity.users.Teacher;
 
 public class Coursework {
   private String name;

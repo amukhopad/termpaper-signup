@@ -1,11 +1,10 @@
 package ua.edu.ukma.termpapers.repository.coursework;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.hadoop.hbase.TableName;
 
-import ua.edu.ukma.termpapers.entities.coursework.Coursework;
+import ua.edu.ukma.termpapers.entity.coursework.Coursework;
 
 public interface CourseworkRepository {
   TableName COURSEWORK_TABLE = TableName.valueOf("coursework");

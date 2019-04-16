@@ -1,4 +1,4 @@
-package ua.edu.ukma.termpapers.entities.enums;
+package ua.edu.ukma.termpapers.entity.enums;
 
 public enum Degree {
   DOCTOR("доктор наук"),

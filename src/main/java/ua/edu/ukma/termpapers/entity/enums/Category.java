@@ -1,4 +1,4 @@
-package ua.edu.ukma.termpapers.entities.enums;
+package ua.edu.ukma.termpapers.entity.enums;
 
 public enum Category {
   HIGHEST("cпеціаліст вищої категорії"),

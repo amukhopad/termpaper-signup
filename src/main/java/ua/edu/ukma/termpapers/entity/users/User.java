@@ -1,14 +1,17 @@
-package ua.edu.ukma.termpapers.entities.users;
+package ua.edu.ukma.termpapers.entity.users;
 
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.enums.Role;
 
 abstract public class User<T extends User<T>> {
+
   private String email;
   private String drfo;
   private String givenName;
   private String familyName;
   private String fathersName;
   private Faculty faculty;
+  private Role role;
 
   public String getFullName() {
     return String.format("%s %s %s", familyName, givenName, fathersName);
@@ -16,8 +19,8 @@ abstract public class User<T extends User<T>> {
 
   public String getShortNameWithInitials() {
     return String.format("%s %s. %s.", familyName,
-            givenName.substring(0, 1),
-            fathersName.substring(0, 1));
+        givenName.substring(0, 1),
+        fathersName.substring(0, 1));
   }
 
   public String getEmail() {
@@ -72,5 +75,14 @@ abstract public class User<T extends User<T>> {
 
   public Faculty getFaculty() {
     return faculty;
+  }
+
+  public T setRole(Role role) {
+    this.role = role;
+    return (T) this;
+  }
+
+  public Role getRole() {
+    return role;
   }
 }

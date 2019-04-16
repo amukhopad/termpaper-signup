@@ -1,6 +1,6 @@
-package ua.edu.ukma.termpapers.entities.users;
+package ua.edu.ukma.termpapers.entity.users;
 
-import ua.edu.ukma.termpapers.entities.enums.Category;
+import ua.edu.ukma.termpapers.entity.enums.Category;
 
 public class Methodist extends User<Methodist> {
   private Category category;
