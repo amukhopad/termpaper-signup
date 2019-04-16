@@ -19,6 +19,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import ua.edu.ukma.termpapers.annotation.Column;
 import ua.edu.ukma.termpapers.annotation.Id;
 import ua.edu.ukma.termpapers.annotation.Table;
+import ua.edu.ukma.termpapers.connection.HBaseConnection;
 import ua.edu.ukma.termpapers.exception.HBasePersistenceException;
 
 public class HBaseUtil {
@@ -92,7 +93,12 @@ public class HBaseUtil {
       Method columnGetter = getGetterFor(field);
       String columnValue;
       try {
-        columnValue = columnGetter.invoke(entity).toString();
+        if (field.getType().isAnnotationPresent(Table.class)) {
+          Object columnData = columnGetter.invoke(entity);
+          columnValue = getGetterFor(getIdField(field.getType())).invoke(columnData).toString();
+        } else {
+          columnValue = columnGetter.invoke(entity).toString();
+        }
       } catch (IllegalAccessException | InvocationTargetException ex) {
         throw new HBasePersistenceException(
             format("Error while creating Put operation for type %s", type.getName()), ex);
@@ -103,8 +109,8 @@ public class HBaseUtil {
     return operation;
   }
 
-  public static Get buildGetOperation(Class<?> type, String key) {
-    Get operation = new Get(key.getBytes());
+  public static Get buildGetOperation(Class<?> type, byte[] key) {
+    Get operation = new Get(key);
     List<Field> dataFields = getDataFields(type);
     dataFields.stream()
         .map(field -> field.getAnnotation(Column.class).family())
@@ -134,7 +140,7 @@ public class HBaseUtil {
     return getColumnAnnotation(type, fieldName).name();
   }
 
-  public static Method getGetterFor(Field field) {
+  private static Method getGetterFor(Field field) {
     String fieldName = field.getName();
     String getterName =
         getterPrefix + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
@@ -147,7 +153,7 @@ public class HBaseUtil {
     }
   }
 
-  public static Method getSetterFor(Field field) {
+  private static Method getSetterFor(Field field) {
     String fieldName = field.getName();
     String setterName =
         setterPrefix + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
@@ -160,7 +166,7 @@ public class HBaseUtil {
     }
   }
 
-  public static List<Field> getDataFields(Class<?> type) {
+  private static List<Field> getDataFields(Class<?> type) {
     return Arrays.stream(type.getDeclaredFields())
         .filter(field -> field.isAnnotationPresent(Column.class))
         .collect(Collectors.toList());
@@ -179,5 +185,68 @@ public class HBaseUtil {
           "@Column annotation is not found for field %s for type %s", field, type.getName()));
     }
     return field.getAnnotation(Column.class);
+  }
+
+  public static <T> T buildFromResult(Result result, Class<T> type, HBaseConnection connection) {
+    T entity;
+    try {
+      entity = type.getConstructor().newInstance();
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+      throw new HBasePersistenceException(
+          format("No default constructor found for type %s", type.getName()), ex);
+    }
+    Field idField = HBaseUtil.getIdField(type);
+    Method idSetter = HBaseUtil.getSetterFor(idField);
+    Object idValue = getValueFor(idField, result.getRow(), connection);
+    try {
+      idSetter.invoke(entity, idValue);
+    } catch (IllegalAccessException | InvocationTargetException ex) {
+      throw new HBasePersistenceException(
+          format("No setter found for field %s for type %s", idField.getName(), type.getName()),
+          ex);
+    }
+    List<Field> dataFields = HBaseUtil.getDataFields(type);
+    dataFields
+        .forEach(field -> {
+          Method setter = HBaseUtil.getSetterFor(field);
+          String family = field.getAnnotation(Column.class).family();
+          String name = field.getAnnotation(Column.class).name();
+          Object value = getValueFor(field, result.getValue(family.getBytes(), name.getBytes()),
+              connection);
+          try {
+            setter.invoke(entity, value);
+          } catch (IllegalAccessException | InvocationTargetException ex) {
+            throw new HBasePersistenceException(
+                format("No setter found for field %s for type %s",
+                    field.getName(), type.getName()), ex);
+          }
+        });
+
+    return entity;
+  }
+
+  @SuppressWarnings("unchecked")
+  private static Object getValueFor(Field field, byte[] result, HBaseConnection connection) {
+    if (result == null) {
+      return null;
+    }
+    String fieldType = field.getType().getName();
+
+    if (fieldType.equals("java.lang.String")) {
+      return Bytes.toString(result);
+    }
+
+    if (field.getType().isAnnotationPresent(Table.class)) {
+      Get operation = HBaseUtil.buildGetOperation(field.getType(), result);
+      Result compound = connection.get(HBaseUtil.getTableNameFor(field.getType()), operation);
+      return buildFromResult(compound, field.getType(), connection);
+    }
+
+    if (field.getType().isEnum()) {
+      return Enum.valueOf((Class<? extends Enum>) field.getType(), Bytes.toString(result));
+    }
+
+    throw new HBasePersistenceException(format("Type %s of field %s for type %s is not supported ",
+        fieldType, field.getName(), field.getDeclaringClass().getName()));
   }
 }

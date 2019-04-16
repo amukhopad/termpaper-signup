@@ -14,15 +14,15 @@
         <h2 class="form-heading">Log in</h2>
 
         <div class="form-group ${error != null ? 'has-error' : ''}">
-            <span>${message}</span>
+            <p>${message}</p>
             <input name="username" type="text" class="form-control" placeholder="Username"
                    autofocus="true"/>
             <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <span>${error}</span>
+            <p>${error}</p>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="/user/registration">Create an account</a></h4>
+            <h4 class="text-center"><a href="/user/register">Create an account</a></h4>
         </div>
     </form>
 </div>

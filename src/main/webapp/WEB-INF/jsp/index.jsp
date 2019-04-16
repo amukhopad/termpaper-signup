@@ -16,9 +16,16 @@
     <c:if test="${pageContext.request.userPrincipal.name != null}">
         <form id="logoutForm" method="POST" action="/logout">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="submit" style="display: none" id="submitInput">
         </form>
 
-        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+        <h2>Welcome ${pageContext.request.userPrincipal.name} | <a href="#"><label
+                for="submitInput">Logout</label></a></h2>
+    </c:if>
+    <c:if test="${pageContext.request.userPrincipal.name == null}">
+        <div>
+            <a href="/login">Login</a>
+        </div>
     </c:if>
 </div>
 <h2>Користувачі</h2>
@@ -26,12 +33,15 @@
     <a href="/user/all">Список користувачів</a>
 </div>
 <div>
-    <a href="/user/registration">Додати користувача</a>
+    <a href="/user/register">Додати користувача</a>
 </div>
 
 <h2>Студенти</h2>
 <div>
-    <a href="/users/registration">Реєстрація студентів</a>
+    <a href="/student/all">Список студентів</a>
+</div>
+<div>
+    <a href="/student/register">Реєстрація студентів</a>
 </div>
 
 <h2>Курсові роботи</h2>
