@@ -11,7 +11,7 @@
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
 <form:form method="POST" action="/user/register" modelAttribute="user">
     <table>

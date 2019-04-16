@@ -3,14 +3,14 @@
 
 <html>
 <head>
-    <title>${student.user.shortNameWithInitials}</title>
+    <title>${teacher.user.shortNameWithInitials}</title>
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
-</div>
-<div>
-    <a href="/teacher/all">До списку викладачів</a>
+    <a href="/">На головну</a> |
+    <div>
+        <a href="/teacher/all">До списку викладачів</a>
+    </div>
 </div>
 <div>
     <h3>${teacher.user.fullName}</h3>
@@ -25,11 +25,11 @@
         </tr>
         <tr>
             <td>Посада:</td>
-            <td>${teacher.academicRole}</td>
+            <td>${teacher.academicRole.name}</td>
         </tr>
         <tr>
             <td>Вчений ступінь:</td>
-            <td>${teacher.degree}</td>
+            <td>${teacher.degree.name}</td>
         </tr>
     </table>
 </div>

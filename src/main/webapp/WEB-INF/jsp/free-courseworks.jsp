@@ -6,6 +6,9 @@
 </head>
 <body>
 <div>
+    <a href="/">Назад</a>
+</div>
+<div>
     <h3>Незайняті теми курсових робіт</h3>
     <c:forEach items="${freeCWs}" var="cw">
         <p>

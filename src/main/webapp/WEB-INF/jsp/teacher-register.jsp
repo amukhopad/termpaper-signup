@@ -6,12 +6,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Teacher registration</title>
+    <title>Реєстрація викладачів</title>
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
 <form:form method="POST" action="/teacher/register" modelAttribute="teacher">
     <table>

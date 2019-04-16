@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import ua.edu.ukma.termpapers.entity.enums.Role;
 import ua.edu.ukma.termpapers.repository.DefaultUserRepository;
 import ua.edu.ukma.termpapers.service.PlainPasswordEncoder;
 
@@ -19,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private PasswordEncoder passwordEncoder;
 
   public SecurityConfiguration(DefaultUserRepository userRepository,
-      PlainPasswordEncoder passwordEncoder) {
+                               PlainPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
   }
@@ -33,7 +35,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http
         .authorizeRequests()
-        .antMatchers("/", "/css/**", "/favicon.ico", "/user/register").permitAll()
+        .antMatchers("/",
+            "/css/**",
+            "/favicon.ico",
+            "/user/register")
+        .permitAll()
+        .antMatchers("/user/all")
+        .hasRole(Role.METHODIST.name())
+        .antMatchers("/student/register")
+        .hasAnyRole(Role.METHODIST.name(), Role.STUDENT.name())
+        .antMatchers(
+            "/coursework/new",
+            "/teacher/register")
+        .hasAnyRole(Role.METHODIST.name(), Role.TEACHER.name())
         .anyRequest().authenticated()
         .and()
         .formLogin()

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <a href="/coursework/free">Назад</a>
+    <a href="/">На головну</a> | <a href="/coursework/free">Назад</a>
 </div>
 <div>
     <h3>Деталі курсової</h3>

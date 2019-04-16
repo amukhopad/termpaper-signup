@@ -6,14 +6,14 @@
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
 <div>
     <h3>Список користувачів</h3>
     <c:forEach items="${userList}" var="user">
         <p>
             <a href="/user?email=${user.email}">${user.fullName}</a> |
-                ${user.email} | ${user.role}
+                ${user.email} | ${user.role.name}
         </p>
     </c:forEach>
 </div>

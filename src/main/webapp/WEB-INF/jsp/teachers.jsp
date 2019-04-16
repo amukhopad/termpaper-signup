@@ -6,14 +6,14 @@
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
 <div>
     <h3>Список викладачів</h3>
     <c:forEach items="${teacherList}" var="teacher">
         <p>
             <a href="/teacher?teacherId=${teacher.id}">${teacher.user.fullName}</a> |
-                ${teacher.user.email} | ${teacher.academicRole} | ${teacher.degree}
+                ${teacher.user.email} | ${teacher.academicRole.name} | ${teacher.degree.name}
         </p>
     </c:forEach>
 </div>

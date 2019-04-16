@@ -1,7 +1,9 @@
 package ua.edu.ukma.termpapers.entity.enums;
 
 public enum Role {
-  STUDENT("Student"), TEACHER("Teacher"), METHODIST("Methodist");
+  STUDENT("студент"),
+  TEACHER("викладач"),
+  METHODIST("методист");
 
   private String name;
 

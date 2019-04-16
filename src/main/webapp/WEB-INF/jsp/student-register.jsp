@@ -6,13 +6,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User registration</title>
+    <title>Реєстрація студента</title>
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
+<div>
+<h2>Реєстрація студента</h2>
 <form:form method="POST" action="/student/register" modelAttribute="student">
     <table>
         <tr>
@@ -44,5 +46,6 @@
         </tr>
     </table>
 </form:form>
+</div>
 </body>
 </html>
