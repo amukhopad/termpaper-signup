@@ -1,49 +1,57 @@
 package ua.edu.ukma.termpapers.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ua.edu.ukma.termpapers.entity.enums.Faculty;
-import ua.edu.ukma.termpapers.entity.users.Student;
-import ua.edu.ukma.termpapers.repository.user.StudentRepository;
+import org.springframework.web.servlet.ModelAndView;
+import ua.edu.ukma.termpapers.entity.User;
+import ua.edu.ukma.termpapers.entity.enums.Role;
+import ua.edu.ukma.termpapers.repository.UserRepository;
 
 @Controller
-@RequestMapping("users")
+@RequestMapping("user")
 public class UserController {
-  private final StudentRepository repository;
 
-  public UserController(StudentRepository repository) {
+  private final UserRepository repository;
+
+  public UserController(UserRepository repository) {
     this.repository = repository;
   }
 
-  @GetMapping("/{email}")
-  public String getUserById(@PathVariable("email") String email) {
-    try {
-      Student user = repository.get(email);
+  @GetMapping
+  public String getUser(@RequestParam String email, Model model) {
+    User user = repository.get(email);
+    model.addAttribute(user);
 
-      return user.toString();
-    } catch (RuntimeException e) {
-      return e.getMessage();
-    }
+    return "user-details";
   }
 
-  @GetMapping("/registration")
+  @GetMapping("/all")
+  public String getAllUsers(Model model) {
+    List<User> users = repository.getAll();
+    model.addAttribute(users);
+
+    return "users";
+  }
+
+  @GetMapping("/register")
   public String registration(Model model) {
-    model.addAttribute("student", new Student());
-    model.addAttribute("faculties", Faculty.values());
-    return "register";
+    model.addAttribute("user", new User());
+    model.addAttribute("roles", Role.values());
+    return "user-register";
   }
 
   @ResponseBody
   @PostMapping("/register")
-  public String createUser(@ModelAttribute("student") Student student) {
-    repository.put(student);
+  public ModelAndView createUser(@ModelAttribute("user") User user) {
+    repository.put(user);
 
-    return getUserById(student.getEmail());
+    return new ModelAndView("redirect:/user?email=" + user.getEmail());
   }
 }

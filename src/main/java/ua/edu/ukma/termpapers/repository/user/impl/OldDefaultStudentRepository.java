@@ -13,10 +13,10 @@ import ua.edu.ukma.termpapers.entity.users.Student;
 import ua.edu.ukma.termpapers.repository.user.StudentRepository;
 
 @Repository
-public class DefaultStudentRepository extends AbstractUserRepository<Student>
+public class OldDefaultStudentRepository extends AbstractUserRepository<Student>
     implements StudentRepository {
 
-  public DefaultStudentRepository(HBaseConnection connection) {
+  public OldDefaultStudentRepository(HBaseConnection connection) {
     super(connection, Student.class);
   }
 

@@ -10,6 +10,9 @@
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
+<div>
+    <a href="/">Додому</a>
+</div>
 <form:form method="POST" action="/user/register" modelAttribute="user">
     <table>
         <tr>
