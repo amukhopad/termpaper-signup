@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${cw.name} | ${cw.teacher.shortNameWithInitials}</title>
+    <title>${cw.name} | ${cw.teacher.user.shortNameWithInitials}</title>
 </head>
 <body>
 <div>
@@ -22,8 +22,8 @@
         <tr>
             <td>Викладач:</td>
             <td>
-                <a href="/coursework/teacher/${cw.teacher.email}">
-                    ${cw.teacher.shortNameWithInitials}
+                <a href="/coursework/teacher/${cw.teacher.user.email}">
+                    ${cw.teacher.user.shortNameWithInitials}
                 </a>
             </td>
         </tr>

@@ -1,12 +1,16 @@
 package ua.edu.ukma.termpapers.repository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.hbase.CompareOperator;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
@@ -56,6 +60,24 @@ public abstract class DefaultCrudRepository<T> implements CrudRepository<T> {
   @Override
   public List<T> getAll() {
     List<Result> results = connection.scan(HBaseUtil.getTableNameFor(type));
+    return results.stream()
+        .map(result -> HBaseUtil.buildFromResult(result, type, connection))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<T> getBySingleFieldValue(String fieldName, String fieldValue) {
+    if (fieldName == null || fieldValue == null) {
+      return Collections.emptyList();
+    }
+
+    Filter filter = new SingleColumnValueFilter(
+        HBaseUtil.getColumnFamily(type, fieldName).getBytes(),
+        HBaseUtil.getColumnName(type, fieldName).getBytes(),
+        CompareOperator.EQUAL,
+        fieldValue.getBytes());
+
+    List<Result> results = connection.scan(HBaseUtil.getTableNameFor(type), filter);
     return results.stream()
         .map(result -> HBaseUtil.buildFromResult(result, type, connection))
         .collect(Collectors.toList());

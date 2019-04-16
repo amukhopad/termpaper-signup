@@ -13,15 +13,19 @@ import org.springframework.web.servlet.ModelAndView;
 import ua.edu.ukma.termpapers.entity.User;
 import ua.edu.ukma.termpapers.entity.enums.Role;
 import ua.edu.ukma.termpapers.repository.UserRepository;
+import ua.edu.ukma.termpapers.service.SecurityService;
 
 @Controller
 @RequestMapping("user")
 public class UserController {
 
   private final UserRepository repository;
+  private final SecurityService securityService;
 
-  public UserController(UserRepository repository) {
+  public UserController(UserRepository repository,
+      SecurityService securityService) {
     this.repository = repository;
+    this.securityService = securityService;
   }
 
   @GetMapping
@@ -51,6 +55,7 @@ public class UserController {
   @PostMapping("/register")
   public ModelAndView createUser(@ModelAttribute("user") User user) {
     repository.put(user);
+    securityService.autoLogin(user.getEmail(), user.getPassword());
 
     return new ModelAndView("redirect:/user?email=" + user.getEmail());
   }

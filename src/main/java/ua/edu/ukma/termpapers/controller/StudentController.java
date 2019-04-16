@@ -49,7 +49,6 @@ public class StudentController {
   public String registration(Model model) {
     List<User> users = userRepository.getAll();
     model.addAttribute("student", new Student());
-    model.addAttribute("user", new User());
     model.addAttribute("users", users);
     model.addAttribute("faculties", Faculty.values());
 
