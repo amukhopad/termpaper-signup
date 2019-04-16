@@ -12,7 +12,17 @@
 <body>
 <h1>Головна сторінка</h1>
 
-<a href="/users/registration">Реєстрація студентів</a>
+<h2>Студенти</h2>
+<div>
+    <a href="/users/registration">Реєстрація студентів</a>
+</div>
 
+<h2>Курсові роботи</h2>
+<div>
+    <a href="/coursework/free">Незайняті курсові роботи</a>
+</div>
+<div>
+    <a href="/coursework/new">Додати курсову роботу</a>
+</div>
 </body>
 </html>
