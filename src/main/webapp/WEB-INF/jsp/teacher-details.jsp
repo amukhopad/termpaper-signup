@@ -1,32 +1,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
 <head>
-    <title>${teacher.shortNameWithInitials}</title>
+    <title>${student.user.shortNameWithInitials}</title>
 </head>
 <body>
 <div>
-    <a href="/coursework/free">Назад</a>
+    <a href="/">Додому</a>
 </div>
 <div>
-    <h3>${teacher.fullName}</h3>
+    <a href="/teacher/all">До списку викладачів</a>
+</div>
+<div>
+    <h3>${teacher.user.fullName}</h3>
     <table>
         <tr>
             <td>Пошта:</td>
-            <td>${teacher.email}</td>
+            <td>${teacher.user.email}</td>
         </tr>
         <tr>
-            <td>Роль:</td>
+            <td>Код викладача:</td>
+            <td>${teacher.id}</td>
+        </tr>
+        <tr>
+            <td>Посада:</td>
             <td>${teacher.academicRole}</td>
         </tr>
         <tr>
-            <td>Вчене звання:</td>
+            <td>Вчений ступінь:</td>
             <td>${teacher.degree}</td>
-        </tr>
-        <tr>
-            <td>Факультет:</td>
-            <td>${teacher.faculty.name}</td>
         </tr>
     </table>
 </div>
@@ -35,8 +38,8 @@
     <c:choose>
         <c:when test="${foundCWs ne null}">
             <c:forEach items="${foundCWs}" var="cw">
-                <p>${cw.teacher.shortNameWithInitials} |
-                    <a href="/coursework/${cw.key}">
+                <p>${cw.teacher.user.shortNameWithInitials} |
+                    <a href="/coursework/${cw.id}">
                             ${cw.name}
                     </a><br>---
                 </p>

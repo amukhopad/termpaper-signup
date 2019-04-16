@@ -1,7 +1,6 @@
 package ua.edu.ukma.termpapers.repository.util;
 
 import static java.lang.String.format;
-import static org.apache.hadoop.hbase.util.Bytes.toBytes;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -24,34 +23,8 @@ import ua.edu.ukma.termpapers.exception.HBasePersistenceException;
 
 public class HBaseUtil {
 
-  public static final String getterPrefix = "get";
-  public static final String setterPrefix = "set";
-
-  public static <T extends Enum<T>> T getEnum(Class<T> enumType,
-      Result result, byte[] family, byte[] column) {
-    String name = Bytes.toString(result.getValue(family, column));
-    return (name == null) ? null : Enum.valueOf(enumType, name);
-  }
-
-  public static String getString(Result result, byte[] family, byte[] column) {
-    return Bytes.toString(result.getValue(family, column));
-  }
-
-  public static int getInt(Result result, byte[] family, byte[] column) {
-    return Bytes.toInt(result.getValue(family, column));
-  }
-
-  public static void ifPresent(Put put, byte[] cf, byte[] column, Integer value) {
-    if (value != null) {
-      put.addColumn(cf, column, toBytes(value));
-    }
-  }
-
-  public static void ifPresent(Put put, byte[] cf, byte[] column, String value) {
-    if (value != null) {
-      put.addColumn(cf, column, toBytes(value));
-    }
-  }
+  private static final String getterPrefix = "get";
+  private static final String setterPrefix = "set";
 
   public static TableName getTableNameFor(Object entity) {
     Class<?> type = entity.getClass();
@@ -93,11 +66,14 @@ public class HBaseUtil {
       Method columnGetter = getGetterFor(field);
       String columnValue;
       try {
-        if (field.getType().isAnnotationPresent(Table.class)) {
-          Object columnData = columnGetter.invoke(entity);
-          columnValue = getGetterFor(getIdField(field.getType())).invoke(columnData).toString();
+        Object columnData = columnGetter.invoke(entity);
+        if (columnData != null && field.getType().isAnnotationPresent(Table.class)) {
+          columnData = getGetterFor(getIdField(field.getType())).invoke(columnData);
+        }
+        if (columnData == null) {
+          columnValue = "";
         } else {
-          columnValue = columnGetter.invoke(entity).toString();
+          columnValue = columnData.toString();
         }
       } catch (IllegalAccessException | InvocationTargetException ex) {
         throw new HBasePersistenceException(
@@ -124,20 +100,58 @@ public class HBaseUtil {
     return new Delete(key.getBytes());
   }
 
-  public static Field getIdField(Class<?> type) {
-    return Arrays.stream(type.getDeclaredFields())
-        .filter(field -> field.isAnnotationPresent(Id.class))
-        .findAny()
-        .orElseThrow(() -> new HBasePersistenceException(
-            format("Field with @Id annotation is not found for type %s", type.getName())));
-  }
-
   public static String getColumnFamily(Class<?> type, String fieldName) {
     return getColumnAnnotation(type, fieldName).family();
   }
 
   public static String getColumnName(Class<?> type, String fieldName) {
     return getColumnAnnotation(type, fieldName).name();
+  }
+
+  public static <T> T buildFromResult(Result result, Class<T> type, HBaseConnection connection) {
+    T entity;
+    try {
+      entity = type.getConstructor().newInstance();
+    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+      throw new HBasePersistenceException(
+          format("No default constructor found for type %s", type.getName()), ex);
+    }
+    Field idField = HBaseUtil.getIdField(type);
+    Method idSetter = HBaseUtil.getSetterFor(idField);
+    Object idValue = getValueFor(idField, result.getRow(), connection);
+    try {
+      idSetter.invoke(entity, idValue);
+    } catch (IllegalAccessException | InvocationTargetException ex) {
+      throw new HBasePersistenceException(
+          format("No setter found for field %s for type %s", idField.getName(), type.getName()),
+          ex);
+    }
+    List<Field> dataFields = HBaseUtil.getDataFields(type);
+    dataFields
+        .forEach(field -> {
+          Method setter = HBaseUtil.getSetterFor(field);
+          String family = field.getAnnotation(Column.class).family();
+          String name = field.getAnnotation(Column.class).name();
+          Object value = getValueFor(field, result.getValue(family.getBytes(), name.getBytes()),
+              connection);
+          try {
+            setter.invoke(entity, value);
+          } catch (IllegalAccessException | InvocationTargetException ex) {
+            throw new HBasePersistenceException(
+                format("No setter found for field %s for type %s",
+                    field.getName(), type.getName()), ex);
+          }
+        });
+
+    return entity;
+  }
+
+  private static Field getIdField(Class<?> type) {
+    return Arrays.stream(type.getDeclaredFields())
+        .filter(field -> field.isAnnotationPresent(Id.class))
+        .findAny()
+        .orElseThrow(() -> new HBasePersistenceException(
+            format("Field with @Id annotation is not found for type %s", type.getName())));
   }
 
   private static Method getGetterFor(Field field) {
@@ -187,53 +201,23 @@ public class HBaseUtil {
     return field.getAnnotation(Column.class);
   }
 
-  public static <T> T buildFromResult(Result result, Class<T> type, HBaseConnection connection) {
-    T entity;
-    try {
-      entity = type.getConstructor().newInstance();
-    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
-      throw new HBasePersistenceException(
-          format("No default constructor found for type %s", type.getName()), ex);
-    }
-    Field idField = HBaseUtil.getIdField(type);
-    Method idSetter = HBaseUtil.getSetterFor(idField);
-    Object idValue = getValueFor(idField, result.getRow(), connection);
-    try {
-      idSetter.invoke(entity, idValue);
-    } catch (IllegalAccessException | InvocationTargetException ex) {
-      throw new HBasePersistenceException(
-          format("No setter found for field %s for type %s", idField.getName(), type.getName()),
-          ex);
-    }
-    List<Field> dataFields = HBaseUtil.getDataFields(type);
-    dataFields
-        .forEach(field -> {
-          Method setter = HBaseUtil.getSetterFor(field);
-          String family = field.getAnnotation(Column.class).family();
-          String name = field.getAnnotation(Column.class).name();
-          Object value = getValueFor(field, result.getValue(family.getBytes(), name.getBytes()),
-              connection);
-          try {
-            setter.invoke(entity, value);
-          } catch (IllegalAccessException | InvocationTargetException ex) {
-            throw new HBasePersistenceException(
-                format("No setter found for field %s for type %s",
-                    field.getName(), type.getName()), ex);
-          }
-        });
-
-    return entity;
-  }
-
   @SuppressWarnings("unchecked")
   private static Object getValueFor(Field field, byte[] result, HBaseConnection connection) {
-    if (result == null) {
+    if (result == null || result.length == 0) {
       return null;
     }
     String fieldType = field.getType().getName();
 
     if (fieldType.equals("java.lang.String")) {
       return Bytes.toString(result);
+    }
+
+    if (fieldType.equals("int")) {
+      return Integer.valueOf(Bytes.toString(result));
+    }
+
+    if (fieldType.equals("long")) {
+      return Long.valueOf(Bytes.toString(result));
     }
 
     if (field.getType().isAnnotationPresent(Table.class)) {

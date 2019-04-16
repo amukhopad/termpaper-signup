@@ -30,7 +30,7 @@ public class StudentController {
   }
 
   @GetMapping
-  public String getStudentByEmail(@RequestParam("studentId") String studentId, Model model) {
+  public String getStudentById(@RequestParam("studentId") String studentId, Model model) {
     Student student = repository.get(studentId);
     model.addAttribute(student);
 
@@ -38,7 +38,7 @@ public class StudentController {
   }
 
   @GetMapping("/all")
-  public String getAllUsers(Model model) {
+  public String getAllStudents(Model model) {
     List<Student> students = repository.getAll();
     model.addAttribute(students);
 
@@ -49,7 +49,6 @@ public class StudentController {
   public String registration(Model model) {
     List<User> users = userRepository.getAll();
     model.addAttribute("student", new Student());
-    model.addAttribute("user", new User());
     model.addAttribute("users", users);
     model.addAttribute("faculties", Faculty.values());
 
@@ -58,7 +57,7 @@ public class StudentController {
 
   @ResponseBody
   @PostMapping("/register")
-  public ModelAndView createUser(@ModelAttribute("student") Student student) {
+  public ModelAndView createStudent(@ModelAttribute("student") Student student) {
     repository.put(student);
 
     return new ModelAndView("redirect:/student?studentId=" + student.getStudentId());

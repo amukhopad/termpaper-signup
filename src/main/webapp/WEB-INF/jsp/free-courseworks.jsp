@@ -9,10 +9,10 @@
     <h3>Незайняті теми курсових робіт</h3>
     <c:forEach items="${freeCWs}" var="cw">
         <p>
-            <a href="/coursework/teacher/${cw.teacher.email}">
-                    ${cw.teacher.shortNameWithInitials}
+            <a href="/coursework/teacher/${cw.teacher.user.email}">
+                    ${cw.teacher.user.shortNameWithInitials}
             </a> |
-            <a href="/coursework/${cw.key}">
+            <a href="/coursework/${cw.id}">
                     ${cw.name}
             </a><br>---
         </p>

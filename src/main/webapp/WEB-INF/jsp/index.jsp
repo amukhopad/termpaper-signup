@@ -44,6 +44,14 @@
     <a href="/student/register">Реєстрація студентів</a>
 </div>
 
+<h2>Викладачі</h2>
+<div>
+    <a href="/teacher/all">Список викладачів</a>
+</div>
+<div>
+    <a href="/teacher/register">Реєстрація викладачів</a>
+</div>
+
 <h2>Курсові роботи</h2>
 <div>
     <a href="/coursework/free">Незайняті курсові роботи</a>

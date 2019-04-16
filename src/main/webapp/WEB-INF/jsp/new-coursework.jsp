@@ -1,6 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 
 <!DOCTYPE html>
@@ -11,10 +11,17 @@
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
+<div>
+    <a href="/">Додому</a>
+</div>
 <form:form method="POST"
            action="/coursework/submit" modelAttribute="coursework">
     <table>
         <form:hidden path="year" value="2019"/>
+        <tr>
+            <td><form:label path="id">Код</form:label></td>
+            <td><form:input path="id"/></td>
+        </tr>
         <tr>
             <td><form:label path="name">Назва</form:label></td>
             <td><form:input path="name"/></td>
@@ -24,8 +31,12 @@
             <td><form:textarea path="description"/></td>
         </tr>
         <tr>
-            <td><form:label path="teacherEmail">Пошта викладача</form:label></td>
-            <td><form:input path="teacherEmail"/></td>
+            <td><form:label path="teacher.id">Викладач:</form:label></td>
+            <td>
+                <form:select path="teacher.id">
+                    <form:options items="${teachers}" itemLabel="user.fullName" itemValue="id"/>
+                </form:select>
+            </td>
         </tr>
         <tr>
             <td><form:label path="faculty">Факультет</form:label></td>

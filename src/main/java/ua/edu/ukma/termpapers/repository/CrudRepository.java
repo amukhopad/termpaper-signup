@@ -11,4 +11,6 @@ public interface CrudRepository<T> {
   void delete(String key);
 
   List<T> getAll();
+
+  List<T> getBySingleFieldValue(String fieldName, String fieldValue);
 }
