@@ -69,7 +69,7 @@ public abstract class DefaultCrudRepository<T> implements CrudRepository<T> {
         .collect(Collectors.toList());
   }
 
-  public T buildFromResult(Result result) {
+  private T buildFromResult(Result result) {
     T entity;
     try {
       entity = type.getConstructor().newInstance();
@@ -113,15 +113,15 @@ public abstract class DefaultCrudRepository<T> implements CrudRepository<T> {
     }
     String fieldType = field.getType().getName();
 
-    switch (fieldType) {
-      case "java.lang.String":
-        return Bytes.toString(result);
-
-      default:
-        if (field.getType().isEnum()) {
-          return Enum.valueOf((Class<? extends Enum>) field.getType(), Bytes.toString(result));
-        }
-        throw new HBasePersistenceException(format("Type %s is not supported", fieldType));
+    if (fieldType.equals("java.lang.String")) {
+      return Bytes.toString(result);
     }
+
+    if (field.getType().isEnum()) {
+      return Enum.valueOf((Class<? extends Enum>) field.getType(), Bytes.toString(result));
+    }
+
+    throw new HBasePersistenceException(format("Type %s of field %s for type %s is not supported ",
+        fieldType, field.getName(), field.getDeclaringClass().getName()));
   }
 }
