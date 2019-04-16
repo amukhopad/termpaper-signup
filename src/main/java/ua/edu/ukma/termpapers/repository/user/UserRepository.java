@@ -1,7 +1,6 @@
 package ua.edu.ukma.termpapers.repository.user;
 
 import org.apache.hadoop.hbase.TableName;
-
 import ua.edu.ukma.termpapers.entities.users.User;
 
 public interface UserRepository<U extends User> {
@@ -13,6 +12,7 @@ public interface UserRepository<U extends User> {
   byte[] FAMILY_NAME = "familyName".getBytes();
   byte[] FATHER_NAME = "fathersName".getBytes();
   byte[] FACULTY = "faculty".getBytes();
+  byte[] ROLE = "role".getBytes();
 
 
   void put(U user);

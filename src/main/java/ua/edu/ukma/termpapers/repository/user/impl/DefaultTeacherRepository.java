@@ -2,17 +2,14 @@ package ua.edu.ukma.termpapers.repository.user.impl;
 
 import static org.apache.hadoop.hbase.util.Bytes.toBytes;
 import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getEnum;
-import static ua.edu.ukma.termpapers.repository.util.HbaseUtil.getString;
 
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.stereotype.Repository;
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
 import ua.edu.ukma.termpapers.entities.enums.AcademicRole;
 import ua.edu.ukma.termpapers.entities.enums.Degree;
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
 import ua.edu.ukma.termpapers.entities.users.Teacher;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;
 
@@ -22,7 +19,7 @@ public class DefaultTeacherRepository
     implements TeacherRepository {
 
   public DefaultTeacherRepository(HBaseConnection connection) {
-    super(connection);
+    super(connection, Teacher.class);
   }
 
   @Override
@@ -49,15 +46,10 @@ public class DefaultTeacherRepository
     super.delete(email);
   }
 
-  private Teacher buildFromResult(Result result) {
-    return (result.isEmpty()) ? null : new Teacher()
-        .setEmail(Bytes.toString(result.getRow()))
+  @Override
+  protected Teacher buildFromResult(Result result) {
+    return (result.isEmpty()) ? null : super.buildFromResult(result)
         .setAcademicRole(getEnum(AcademicRole.class, result, TEACHER_CF, ACADEMIC_ROLE))
-        .setDegree(getEnum(Degree.class, result, TEACHER_CF, DEGREE))
-        .setGivenName(getString(result, COMMON_CF, GIVEN_NAME))
-        .setFathersName(getString(result, COMMON_CF, FATHER_NAME))
-        .setFamilyName(getString(result, COMMON_CF, FAMILY_NAME))
-        .setFaculty(getEnum(Faculty.class, result, COMMON_CF, FACULTY))
-        .setDrfo(getString(result, COMMON_CF, DRFO));
+        .setDegree(getEnum(Degree.class, result, TEACHER_CF, DEGREE));
   }
 }
