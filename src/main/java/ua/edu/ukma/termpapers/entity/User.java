@@ -23,17 +23,6 @@ public class User {
   @Column(family = "common", name = "password")
   private String password;
 
-//  TableName USERS_TABLE = TableName.valueOf("users");
-//  byte[] COMMON_CF = "common".getBytes();
-//
-//  byte[] DRFO = "drfo".getBytes();
-//  byte[] GIVEN_NAME = "givenName".getBytes();
-//  byte[] FAMILY_NAME = "familyName".getBytes();
-//  byte[] FATHER_NAME = "fathersName".getBytes();
-//  byte[] FACULTY = "faculty".getBytes();
-//  byte[] ROLE = "role".getBytes();
-//
-
   public String getFullName() {
     return String.format("%s %s %s", familyName, givenName, fathersName);
   }
