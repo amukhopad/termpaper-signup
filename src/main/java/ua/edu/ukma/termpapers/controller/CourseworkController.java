@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ua.edu.ukma.termpapers.entities.coursework.Coursework;
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.users.Teacher;
+import ua.edu.ukma.termpapers.entity.coursework.Coursework;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.users.Teacher;
 import ua.edu.ukma.termpapers.repository.coursework.CourseworkRepository;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;
 

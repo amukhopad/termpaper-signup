@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.users.Student;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.users.Student;
 import ua.edu.ukma.termpapers.repository.user.StudentRepository;
 
 @Controller

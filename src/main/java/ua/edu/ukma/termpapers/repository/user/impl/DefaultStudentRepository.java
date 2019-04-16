@@ -9,7 +9,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.springframework.stereotype.Repository;
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
-import ua.edu.ukma.termpapers.entities.users.Student;
+import ua.edu.ukma.termpapers.entity.users.Student;
 import ua.edu.ukma.termpapers.repository.user.StudentRepository;
 
 @Repository

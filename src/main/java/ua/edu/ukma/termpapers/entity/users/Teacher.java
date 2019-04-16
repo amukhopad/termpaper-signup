@@ -1,7 +1,7 @@
-package ua.edu.ukma.termpapers.entities.users;
+package ua.edu.ukma.termpapers.entity.users;
 
-import ua.edu.ukma.termpapers.entities.enums.AcademicRole;
-import ua.edu.ukma.termpapers.entities.enums.Degree;
+import ua.edu.ukma.termpapers.entity.enums.AcademicRole;
+import ua.edu.ukma.termpapers.entity.enums.Degree;
 
 public class Teacher extends User<Teacher> {
   private AcademicRole academicRole;

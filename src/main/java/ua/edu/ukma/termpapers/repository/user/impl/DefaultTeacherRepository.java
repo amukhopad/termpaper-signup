@@ -8,9 +8,9 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.springframework.stereotype.Repository;
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
-import ua.edu.ukma.termpapers.entities.enums.AcademicRole;
-import ua.edu.ukma.termpapers.entities.enums.Degree;
-import ua.edu.ukma.termpapers.entities.users.Teacher;
+import ua.edu.ukma.termpapers.entity.enums.AcademicRole;
+import ua.edu.ukma.termpapers.entity.enums.Degree;
+import ua.edu.ukma.termpapers.entity.users.Teacher;
 import ua.edu.ukma.termpapers.repository.user.TeacherRepository;
 
 @Repository

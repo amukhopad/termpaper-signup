@@ -1,7 +1,7 @@
-package ua.edu.ukma.termpapers.entities.users;
+package ua.edu.ukma.termpapers.entity.users;
 
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.enums.Role;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.enums.Role;
 
 abstract public class User<T extends User<T>> {
 

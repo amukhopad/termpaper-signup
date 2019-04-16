@@ -14,9 +14,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
-import ua.edu.ukma.termpapers.entities.enums.Faculty;
-import ua.edu.ukma.termpapers.entities.enums.Role;
-import ua.edu.ukma.termpapers.entities.users.User;
+import ua.edu.ukma.termpapers.entity.enums.Faculty;
+import ua.edu.ukma.termpapers.entity.enums.Role;
+import ua.edu.ukma.termpapers.entity.users.User;
 import ua.edu.ukma.termpapers.repository.user.UserRepository;
 
 abstract public class AbstractUserRepository<U extends User> implements UserRepository<U> {

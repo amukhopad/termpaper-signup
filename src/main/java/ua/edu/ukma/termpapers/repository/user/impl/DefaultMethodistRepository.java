@@ -8,8 +8,8 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.springframework.stereotype.Repository;
 import ua.edu.ukma.termpapers.connection.HBaseConnection;
-import ua.edu.ukma.termpapers.entities.enums.Category;
-import ua.edu.ukma.termpapers.entities.users.Methodist;
+import ua.edu.ukma.termpapers.entity.enums.Category;
+import ua.edu.ukma.termpapers.entity.users.Methodist;
 import ua.edu.ukma.termpapers.repository.user.MethodistRepository;
 
 @Repository
