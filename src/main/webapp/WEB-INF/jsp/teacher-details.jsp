@@ -41,7 +41,10 @@
                 <p>${cw.teacher.user.shortNameWithInitials} |
                     <a href="/coursework/${cw.id}">
                             ${cw.name}
-                    </a><br>---
+                    </a>
+                    <c:if test="${cw.student ne null}">
+                        --- Тема зайнята
+                    </c:if><br>---
                 </p>
             </c:forEach>
         </c:when>
