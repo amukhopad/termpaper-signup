@@ -7,8 +7,7 @@ public interface CourseworkRepository extends CrudRepository<Coursework> {
 
   List<Coursework> getFree();
 
-  List<Coursework> getByStudentEmail(String email);
+  List<Coursework> getByStudentId(String id);
 
-  List<Coursework> getByTeacherEmail(String email);
-
+  List<Coursework> getByTeacherId(String id);
 }

@@ -9,11 +9,11 @@
     <a href="/">Додому</a>
 </div>
 <div>
-    <h3>Список студентів</h3>
-    <c:forEach items="${studentList}" var="student">
+    <h3>Список викладачів</h3>
+    <c:forEach items="${teacherList}" var="teacher">
         <p>
-            <a href="/student?studentId=${student.studentId}">${student.user.fullName}</a> |
-                ${student.user.email} | ${student.studentId} | ${student.faculty}
+            <a href="/teacher?teacherId=${teacher.id}">${teacher.user.fullName}</a> |
+                ${teacher.user.email} | ${teacher.academicRole} | ${teacher.degree}
         </p>
     </c:forEach>
 </div>

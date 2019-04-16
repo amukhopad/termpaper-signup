@@ -93,11 +93,14 @@ public class HBaseUtil {
       Method columnGetter = getGetterFor(field);
       String columnValue;
       try {
-        if (field.getType().isAnnotationPresent(Table.class)) {
-          Object columnData = columnGetter.invoke(entity);
-          columnValue = getGetterFor(getIdField(field.getType())).invoke(columnData).toString();
+        Object columnData = columnGetter.invoke(entity);
+        if (field.getType().isAnnotationPresent(Table.class) && columnData != null) {
+          columnData = getGetterFor(getIdField(field.getType())).invoke(columnData);
+        }
+        if (columnData == null) {
+          columnValue = "";
         } else {
-          columnValue = columnGetter.invoke(entity).toString();
+          columnValue = columnData.toString();
         }
       } catch (IllegalAccessException | InvocationTargetException ex) {
         throw new HBasePersistenceException(
@@ -227,13 +230,21 @@ public class HBaseUtil {
 
   @SuppressWarnings("unchecked")
   private static Object getValueFor(Field field, byte[] result, HBaseConnection connection) {
-    if (result == null) {
+    if (result == null || result.length == 0) {
       return null;
     }
     String fieldType = field.getType().getName();
 
     if (fieldType.equals("java.lang.String")) {
       return Bytes.toString(result);
+    }
+
+    if (fieldType.equals("int")) {
+      return Integer.valueOf(Bytes.toString(result));
+    }
+
+    if (fieldType.equals("long")) {
+      return Long.valueOf(Bytes.toString(result));
     }
 
     if (field.getType().isAnnotationPresent(Table.class)) {

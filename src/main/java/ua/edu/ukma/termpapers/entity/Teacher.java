@@ -15,7 +15,7 @@ public class Teacher {
   private User user;
   @Column(family = "teachers", name = "academicRole")
   private AcademicRole academicRole;
-  @Column(family = "teachers", name = "degre")
+  @Column(family = "teachers", name = "degree")
   private Degree degree;
 
   public String getId() {

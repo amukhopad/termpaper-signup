@@ -19,6 +19,10 @@
     <table>
         <form:hidden path="year" value="2019"/>
         <tr>
+            <td><form:label path="id">Код</form:label></td>
+            <td><form:input path="id"/></td>
+        </tr>
+        <tr>
             <td><form:label path="name">Назва</form:label></td>
             <td><form:input path="name"/></td>
         </tr>

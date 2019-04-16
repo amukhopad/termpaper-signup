@@ -24,12 +24,12 @@ public class DefaultCourseworkRepository
   }
 
   @Override
-  public List<Coursework> getByStudentEmail(String email) {
-    return getBySingleFieldValue("student", email);
+  public List<Coursework> getByStudentId(String id) {
+    return getBySingleFieldValue("student", id);
   }
 
   @Override
-  public List<Coursework> getByTeacherEmail(String email) {
-    return getBySingleFieldValue("teacher", email);
+  public List<Coursework> getByTeacherId(String id) {
+    return getBySingleFieldValue("teacher", id);
   }
 }
