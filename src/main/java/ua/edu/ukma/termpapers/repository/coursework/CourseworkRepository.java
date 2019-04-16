@@ -26,6 +26,8 @@ public interface CourseworkRepository {
 
   void delete(String email);
 
+  List<Coursework> getFree();
+
   List<Coursework> getByStudent(String studentEmail);
 
   List<Coursework> getByTeacher(String teacherEmail);
