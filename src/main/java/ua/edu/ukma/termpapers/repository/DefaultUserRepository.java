@@ -25,6 +25,6 @@ public class DefaultUserRepository extends DefaultCrudRepository<User> implement
     return new org.springframework.security.core.userdetails.User(
         user.getEmail(),
         user.getPassword(),
-        AuthorityUtils.createAuthorityList(user.getRole().getName()));
+        AuthorityUtils.createAuthorityList("ROLE_" + user.getRole().name()));
   }
 }

@@ -7,10 +7,7 @@
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
-</div>
-<div>
-    <a href="/user/all">До списку користувачів</a>
+    <a href="/">На головну</a> | <a href="/user/all">До списку користувачів</a>
 </div>
 <div>
     <h3>${user.fullName}</h3>
@@ -25,7 +22,7 @@
         </tr>
         <tr>
             <td>Роль:</td>
-            <td>${user.role}</td>
+            <td>${user.role.name}</td>
         </tr>
     </table>
 </div>

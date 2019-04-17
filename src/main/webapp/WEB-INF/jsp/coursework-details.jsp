@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <a href="/coursework/free">Назад</a>
+    <a href="/">На головну</a> | <a href="/coursework/free">Назад</a>
 </div>
 <div>
     <h3>Деталі курсової</h3>
@@ -30,6 +30,33 @@
         <tr>
             <td>Факультет:</td>
             <td>${cw.faculty.name}</td>
+        </tr>
+        <c:if test="${cw.student ne null}">
+            <tr>
+                <td>Записаний студент:</td>
+                <td>
+                    <a href="/student?studentId=${cw.student.studentId}">
+                            ${cw.student.user.shortNameWithInitials}
+                    </a>
+                </td>
+            </tr>
+        </c:if>
+        <tr>
+            <td></td>
+            <td>
+                <c:choose>
+                    <c:when test="${cw.student eq null and user.role eq 'STUDENT'}">
+                        <form action="/coursework/${cw.id}/assign">
+                            <input type="submit" value="Записатися на дисципліну"/>
+                        </form>
+                    </c:when>
+                    <c:when test="${cw.student.user.email eq pageContext.request.userPrincipal.name}">
+                        <form action="/coursework/${cw.id}/unassign">
+                            <input type="submit" value="Виписатися з дисципліни"/>
+                        </form>
+                    </c:when>
+                </c:choose>
+            </td>
         </tr>
     </table>
 </div>

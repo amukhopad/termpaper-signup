@@ -7,7 +7,7 @@
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
 <div>
     <a href="/student/all">До списку студентів</a>
@@ -25,7 +25,7 @@
         </tr>
         <tr>
             <td>Факультет:</td>
-            <td>${student.faculty.name()}</td>
+            <td>${student.faculty.name}</td>
         </tr>
         <tr>
             <td>Контактна інформація:</td>

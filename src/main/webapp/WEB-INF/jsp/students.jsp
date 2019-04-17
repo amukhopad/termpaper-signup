@@ -2,18 +2,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Список користувачів</title>
+    <title>Список студентів</title>
 </head>
 <body>
 <div>
-    <a href="/">Додому</a>
+    <a href="/">На головну</a>
 </div>
 <div>
     <h3>Список студентів</h3>
     <c:forEach items="${studentList}" var="student">
         <p>
-            <a href="/student?studentId=${student.studentId}">${student.user.fullName}</a> |
-                ${student.user.email} | ${student.studentId} | ${student.faculty}
+            <a href="/student?studentId=${student.studentId}">${student.user.fullName}</a>
+             | ${student.faculty.name} | ${student.studentId}  | ${student.user.email}
         </p>
     </c:forEach>
 </div>

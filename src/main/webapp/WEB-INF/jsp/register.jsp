@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hello!</title>
+    <title>Реєстрація</title>
     <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
