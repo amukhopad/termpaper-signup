@@ -22,7 +22,7 @@
         <tr>
             <td>Викладач:</td>
             <td>
-                <a href="/coursework/teacher/${cw.teacher.user.email}">
+                <a href="/teacher?teacherId=${cw.teacher.id}">
                     ${cw.teacher.user.shortNameWithInitials}
                 </a>
             </td>
