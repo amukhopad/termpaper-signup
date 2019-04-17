@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import ua.edu.ukma.termpapers.entity.enums.Role;
 import ua.edu.ukma.termpapers.repository.DefaultUserRepository;
 import ua.edu.ukma.termpapers.service.PlainPasswordEncoder;
@@ -21,7 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   private PasswordEncoder passwordEncoder;
 
   public SecurityConfiguration(DefaultUserRepository userRepository,
-                               PlainPasswordEncoder passwordEncoder) {
+      PlainPasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
   }
@@ -38,7 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers("/",
             "/css/**",
             "/favicon.ico",
-            "/user/register")
+            "/user/register",
+            "/hbase/**")
         .permitAll()
         .antMatchers("/user/all")
         .hasRole(Role.METHODIST.name())
